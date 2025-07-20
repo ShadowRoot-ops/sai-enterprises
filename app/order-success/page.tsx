@@ -14,7 +14,7 @@ interface Order {
   // Add other fields as needed
 }
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const [order, setOrder] = useState<Order | null>(null);
@@ -36,34 +36,51 @@ export default function OrderSuccessPage() {
   }, [orderId, fetchOrder]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Container>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center max-w-md">
-            <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-            <h1 className="text-3xl font-bold mb-4">Order Successful!</h1>
-            <p className="text-gray-600 mb-8">
-              Thank you for your purchase. Your order has been confirmed.
-            </p>
-            {order && (
-              <div className="bg-gray-50 p-6 rounded-lg mb-8">
-                <p className="text-sm text-gray-600 mb-2">Order Number</p>
-                <p className="font-mono font-semibold">{order.orderNumber}</p>
-              </div>
-            )}
-            <div className="space-y-4">
-              <Link href="/orders">
-                <Button className="w-full">View My Orders</Button>
-              </Link>
-              <Link href="/">
-                <Button variant="outline" className="w-full">
-                  Continue Shopping
-                </Button>
-              </Link>
+    <Container>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
+          <h1 className="text-3xl font-bold mb-4">Order Successful!</h1>
+          <p className="text-gray-600 mb-8">
+            Thank you for your purchase. Your order has been confirmed.
+          </p>
+          {order && (
+            <div className="bg-gray-50 p-6 rounded-lg mb-8">
+              <p className="text-sm text-gray-600 mb-2">Order Number</p>
+              <p className="font-mono font-semibold">{order.orderNumber}</p>
             </div>
+          )}
+          <div className="space-y-4">
+            <Link href="/orders">
+              <Button className="w-full">View My Orders</Button>
+            </Link>
+            <Link href="/">
+              <Button variant="outline" className="w-full">
+                Continue Shopping
+              </Button>
+            </Link>
           </div>
         </div>
-      </Container>
+      </div>
+    </Container>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <Container>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p>Loading order details...</p>
+            </div>
+          </div>
+        </Container>
+      }
+    >
+      <OrderSuccessContent />
     </Suspense>
   );
 }
