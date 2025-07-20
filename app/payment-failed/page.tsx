@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Container from "@/components/Container";
 import { XCircle, RefreshCw, Home, ShoppingCart } from "lucide-react";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function PaymentFailedPage() {
+function PaymentFailedContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [countdown, setCountdown] = useState(10);
@@ -132,5 +132,30 @@ export default function PaymentFailedPage() {
         </Card>
       </div>
     </Container>
+  );
+}
+
+export default function PaymentFailedPage() {
+  return (
+    <Suspense
+      fallback={
+        <Container>
+          <div className="min-h-screen flex items-center justify-center py-12">
+            <Card className="max-w-md w-full">
+              <CardHeader className="text-center">
+                <div className="mx-auto mb-4">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-900">
+                  Loading...
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          </div>
+        </Container>
+      }
+    >
+      <PaymentFailedContent />
+    </Suspense>
   );
 }
